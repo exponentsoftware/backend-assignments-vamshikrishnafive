@@ -1,0 +1,26 @@
+{
+  "name": "backend-assignments-vamshikrishnafive",
+  "version": "1.0.0",
+  "description": "## TODO List",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exponentsoftware/backend-assignments-vamshikrishnafive.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/exponentsoftware/backend-assignments-vamshikrishnafive/issues"
+  },
+  "homepage": "https://github.com/exponentsoftware/backend-assignments-vamshikrishnafive#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.13",
+    "nodemon": "^2.0.7"
+  }
+}

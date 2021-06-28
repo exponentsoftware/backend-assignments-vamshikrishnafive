@@ -52,3 +52,49 @@ export const DeleteUserTask = async(req,res) => {
         res.status(404).json({error: error})
     }
 };
+
+//day2 
+
+export const searchByTitle = async(req, res) => {
+    const {title} = req.query;
+    try {
+        const query = new RegExp(title, "i");
+        const post = await UserTaskModel.find({title: query})
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({error:error});
+    }
+}
+
+export const searchByCategory = async(req, res) => {
+    const {category} = req.query;
+    try {
+        const query = new RegExp(category, "i");
+        const post = await UserTaskModel.find({category: query})
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({error:error});
+    }
+}
+
+export const sortByDate = async(req, res) => {
+    const {order} = req.query;
+    try {
+        const Alltasks = await UserTaskModel.find({})
+            .sort({createdAt: order})
+        res.status(200).json(Alltasks);
+    } catch (error) {
+        res.status(404).json({error:error});
+    }
+}
+
+export const completedTask = async(req, res) => {
+    const {id} = req.params;
+    try {
+        const updatePost = await UserTaskModel.findOneAndUpdate({_id:id}, {isTaskCompleted: true}, {new: true})
+        updatePost.save();
+        res.status(200).json(updatePost);
+    } catch (error) {
+        res.status(404).json({error: error})
+    }
+}

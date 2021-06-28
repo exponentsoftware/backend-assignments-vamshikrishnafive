@@ -5,13 +5,9 @@ import { createUserTask, DeleteUserTask, FetchAllUserTask, FetchUserTaskById, up
 const router = express.Router();
 
 router.get('/', FetchAllUserTask);
-
 router.get('/:id', FetchUserTaskById);
-
 router.post('/', createUserTask);
-
 router.patch('/update/:id', updateUserTask);
-
 router.delete('/delete/:id', DeleteUserTask);
 
 export default router;

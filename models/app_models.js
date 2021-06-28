@@ -7,21 +7,7 @@ const UserTaskSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    category: {
-        type: Object,
-        Work: {
-            type:Boolean,
-            default:false
-        },
-        hoddy: {
-            type:Boolean,
-            default:false
-        },
-        task: {
-            type:Boolean,
-            default:false
-        },
-    },
+    category: [String],
     createdAt: {
         type: Date,
         default: new Date,

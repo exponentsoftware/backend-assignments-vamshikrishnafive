@@ -32,3 +32,19 @@ fetch by category
 search by title
 Add capability to sort the data by created_at
 Add api to mark Todo as done, can you use an exisiting api to achieve this?
+
+### Days 3
+
+Add User collection to store below user information:
+User name
+email
+phone
+created at
+updated at
+role
+Add validation on phone and email from the Mongoose schema itself with error message handling
+Link Todo list with User
+Create api to get TODO list for User
+Create User roles for Admin 0, App user 1
+User with Admin role should be able to get all Todos
+User with App user role, should be able to fetch only his Todo list

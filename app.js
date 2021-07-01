@@ -1,8 +1,8 @@
-import express from 'express';
-import mongoose from 'mongoose';
+const express = require('express')
+const mongoose = require('mongoose');
 
-//imports
-import router from './routers/app_routers.js';
+const TodoRouter = require('./routers/task.js') ;
+const UserRouter = require('./routers/user.js') ;
 
 //constant
 const app = express();
@@ -10,7 +10,8 @@ const app = express();
 //Middlewares
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use('/app', router)
+app.use('/api', TodoRouter)
+app.use('/api', UserRouter)
 
 //constants
 const PORT = process.env.PORT || Symbol(5000);
@@ -21,5 +22,5 @@ mongoose.connect(CONECTION_URL.description, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useFindAndModify: false
-}).then(app.listen(PORT.description, () => console.log(`Connected to DB, app running on http://localhost:${PORT.description}/app`)))
+}).then(app.listen(PORT.description, () => console.log(`Connected to DB, app running on http://localhost:${PORT.description}/api`)))
     .catch(err => console.log(err))

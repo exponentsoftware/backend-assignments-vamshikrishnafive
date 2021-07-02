@@ -4,18 +4,20 @@ const mongoose = require('mongoose');
 const TodoRouter = require('./routers/task.js') ;
 const UserRouter = require('./routers/user.js') ;
 
-//constant
+//constants
+const PORT = process.env.PORT || Symbol(5000);
+const CONECTION_URL = Symbol('mongodb://localhost:27017/todo');
+
 const app = express();
+
+app.set('view-engine', 'ejs');
 
 //Middlewares
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
+
 app.use('/api', TodoRouter)
 app.use('/api', UserRouter)
-
-//constants
-const PORT = process.env.PORT || Symbol(5000);
-const CONECTION_URL = Symbol('mongodb://localhost:27017/todo');
 
 //Connection designed
 mongoose.connect(CONECTION_URL.description, {

@@ -5,6 +5,7 @@ exports.signup = async(req, res) => {
     try {
         newUser = await new UserModel(req.body);
         await newUser.save()
+        res.render('register.ejs')
         res.status(200).json(newUser);
     } catch (error) {
         res.status(400).json({error: errorHandler(error)})
@@ -22,6 +23,7 @@ exports.signin = async(req, res) => {
                 return res.status(404).json({Error: "Emali and password doesn't match"})
             }  
             // { _id, name, email, phone, role } = user;
+            res.render('login.ejs', {user})
             return res.status(200).json({Message: "User Found"})
         })
     } catch (error) {

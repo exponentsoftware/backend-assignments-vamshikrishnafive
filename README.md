@@ -48,3 +48,13 @@ Create api to get TODO list for User
 Create User roles for Admin 0, App user 1
 User with Admin role should be able to get all Todos
 User with App user role, should be able to fetch only his Todo list
+
+
+### Days 4
+
+TODO List with Authentication
+Use Passport Js and add authentication to your App
+Create Register and Sign in APIs and on successful signin use Token based authentication
+Signed in User should only be able to call the routes
+Create a basic html page and serve it using express app
+Html page for Register, Sign in and display users Todo list should be created

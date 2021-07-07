@@ -1,8 +1,15 @@
+if (process.env.NODE_ENV != 'production') {
+    require('dotenv').config
+}
+
 const express = require('express')
 const mongoose = require('mongoose');
+const flash = require('express-flash');
+const session = require('express-session');
+const passport = require('passport')
 
-const TodoRouter = require('./routers/task.js') ;
-const UserRouter = require('./routers/user.js') ;
+const TodoRouter = require('./routers/task.js');
+const UserRouter = require('./routers/user.js');
 
 //constants
 const PORT = process.env.PORT || Symbol(5000);
@@ -15,6 +22,14 @@ app.set('view-engine', 'ejs');
 //Middlewares
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
+app.use(flash())
+app.use(session({
+    secret: 'process.env.SESSION_SECRET',
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/api', TodoRouter)
 app.use('/api', UserRouter)

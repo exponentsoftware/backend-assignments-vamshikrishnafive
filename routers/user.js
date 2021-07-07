@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.get('/login', login)
 router.get('/register', register)
-router.post('/signin', isAuth ,signin);
-router.post('/signup', isAuth ,signup);
+router.post('/signin',signin);
+router.post('/signup',signup);
 
 
 module.exports = router;

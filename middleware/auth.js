@@ -11,3 +11,10 @@ exports.isAuth = (req, res, next) => {
     }
     res.redirect('/api/login')
 }
+
+exports.isNotAuth = (req, res, next) => {
+    if(req.isAuthenticated()) {
+        return res.redirect('/api/todo/admin')
+    }
+    next();
+}

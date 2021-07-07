@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema({
-    name: { type: String, required: true },
+    name: { 
+        type: String, 
+        required: [true, 'name is required'] 
+    },
     email: {
         type: String,
         required: [true, 'email is required']
@@ -9,6 +12,10 @@ const UserSchema = mongoose.Schema({
     phone: {
         type: String,
         required: [true, 'phone is required']
+    },
+    password: {
+        type: String, 
+        required: [true, 'password is required']
     },
     roles: { type: Number, default: 1 }, // defalt 1: App User, 0: admin
     createdAt: { type: Date, default: new Date },

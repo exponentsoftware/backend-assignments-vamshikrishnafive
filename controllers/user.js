@@ -5,11 +5,7 @@ const passport = require('passport');
 
 const initialPassport = require('../passport.config')
 
-initialPassport(
-    passport, 
-    email => UserModel.findOne({email}, email === email),
-    id => UserModel.findOne({_id: id}, id === id),
-    )
+initialPassport(passport)
 
 exports.login = (req, res) => {
     res.render('login.ejs');

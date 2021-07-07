@@ -3,8 +3,8 @@ const UserTaskModel = require('../models/task.js');
 exports.adminUser = async(req, res) => {
     try {
         const Alltodo = await UserTaskModel.find({});
-        res.render('todo.ejs', {Alltodo})
-        res.status(200).json(Alltodo);
+        res.render('todo.ejs', {data : Alltodo})
+        // res.status(200).json(Alltodo);
     } catch (error) {
         res.status(404).json({ error: error })
     }

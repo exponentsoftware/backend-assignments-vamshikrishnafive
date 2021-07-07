@@ -1,10 +1,9 @@
 const UserTaskModel = require('../models/task.js');
 
-exports.adminUser = async(req, res) => {
+exports.adminUser = async (req, res) => {
     try {
-        const Alltodo = await UserTaskModel.find({});
-        res.render('todo.ejs', {data : Alltodo})
-        // res.status(200).json(Alltodo);
+        res.status(200).json(res.paginationResult);
+        // res.render('todo.ejs', {data : res.json(res.paginationResult)})
     } catch (error) {
         res.status(404).json({ error: error })
     }
@@ -12,10 +11,9 @@ exports.adminUser = async(req, res) => {
 
 exports.getAllUserTodo = async (req, res) => {
     const id = req.params.user_id
-    // res.send(_id)
     try {
-        const UserTodo = await UserTaskModel.find({ createdBy:id });
-        res.status(200).json(UserTodo);
+        const UserTodo = await UserTaskModel.find({ createdBy: id }).limit();
+        res.status(200).json(res.paginationResult);
     } catch (error) {
         res.status(404).json({ error: error })
     }
@@ -24,7 +22,7 @@ exports.getAllUserTodo = async (req, res) => {
 exports.createUserTodo = async (req, res) => {
 
     const Todo = req.body;
-    const Post = new UserTaskModel({...Todo, createdBy: req.params.user_id});
+    const Post = new UserTaskModel({ ...Todo, createdBy: req.params.user_id });
     try {
         await Post.save();
         res.status(200).json(PostT);

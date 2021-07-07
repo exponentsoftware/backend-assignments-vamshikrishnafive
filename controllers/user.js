@@ -3,7 +3,7 @@ const UserModel = require("../models/user.js");
 const bcrypt = require("bcrypt");
 const passport = require('passport');
 
-const initialPassport = require('../passport.config')
+const initialPassport = require('../middleware/passport.config')
 
 initialPassport(passport)
 
@@ -31,7 +31,7 @@ exports.signup = async(req, res) => {
 };
 
 exports.signin = passport.authenticate('local', {
-    successRedirect: '/api/todo/admin',
-    failureRedirect: '/api/login',
+    successRedirect: '/api/todo/admin?page=1&limit=10',
+    failureRedirect: '/',
     failureMessage: true
 })

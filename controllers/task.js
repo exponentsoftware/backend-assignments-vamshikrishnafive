@@ -1,19 +1,55 @@
 const UserTaskModel = require('../models/task.js');
 
 exports.adminUser = async (req, res) => {
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    let results = {}
+    if (endIndex < UserTaskModel.countDocuments().exec()) {
+        results.next = {
+            page: page + 1,
+            limit: limit
+        }
+    }
+    if (startIndex > 0) {
+        results.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
     try {
-        res.status(200).json(res.paginationResult);
-        // res.render('todo.ejs', {data : res.json(res.paginationResult)})
+        results.results = await UserTaskModel.find().limit(limit).skip(startIndex).exec()
+        res.status(200).json(results);
+        // res.render('todo.ejs', { data: res.json(results) })
     } catch (error) {
         res.status(404).json({ error: error })
     }
 }
 
 exports.getAllUserTodo = async (req, res) => {
-    const id = req.params.user_id
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    let results = {}
+    if (endIndex < UserTaskModel.countDocuments().exec()) {
+        results.next = {
+            page: page + 1,
+            limit: limit
+        }
+    }
+    if (startIndex > 0) {
+        results.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
+    const createdBy = req.params.user_id
     try {
-        const UserTodo = await UserTaskModel.find({ createdBy: id }).limit();
-        res.status(200).json(res.paginationResult);
+        results.results = await UserTaskModel.find({createdBy})
+        .limit(limit).skip(startIndex).exec()
+        res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error })
     }
@@ -54,14 +90,29 @@ exports.deleteUserTodo = async (req, res) => {
     }
 };
 
-//day2 
-
 exports.searchByTitle = async (req, res) => {
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
     const { title } = req.query;
+    let results = {}
+    if (endIndex < UserTaskModel.countDocuments().exec()) {
+        results.next = {
+            page: page + 1,
+            limit: limit
+        }
+    }
+    if (startIndex > 0) {
+        results.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
     try {
         const query = new RegExp(title, "i");
-        const post = await UserTaskModel.find({ title: query })
-        res.status(200).json(post);
+        results.results = await UserTaskModel.find({ title: query }).limit(limit).skip(startIndex).exec()
+        res.status(200).json(result);
     } catch (error) {
         res.status(404).json({ error: error });
     }
@@ -79,11 +130,28 @@ exports.searchByCategory = async (req, res) => {
 }
 
 exports.sortByDate = async (req, res) => {
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
     const { order } = req.query;
+    let results = {}
+    if (endIndex < UserTaskModel.countDocuments().exec()) {
+        results.next = {
+            page: page + 1,
+            limit: limit
+        }
+    }
+    if (startIndex > 0) {
+        results.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
     try {
-        const SortedList = await UserTaskModel.find({})
-            .sort({ createdAt: order })
-        res.status(200).json(SortedList);
+        results.results = await UserTaskModel.find({})
+            .sort({ createdAt: order }).limit(limit).skip(startIndex).exec()
+        res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error });
     }
@@ -103,8 +171,8 @@ exports.completedTask = async (req, res) => {
 exports.getSigleTodo = async (req, res) => {
     const { id } = req.params;
     try {
-        const singleTask = await UserTaskModel.findById({ _id: id });
-        res.status(200).json(singleTask);
+        const results = await UserTaskModel.findById({ _id: id });
+        res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error })
     }

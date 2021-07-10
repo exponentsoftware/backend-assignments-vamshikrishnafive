@@ -10,6 +10,8 @@ function initialPassport(passport) {
         }
         try {
             if (await bcrypt.compare(password, user.password)) {
+                const activeUser = await UserModel.findOneAndUpdate({email}, {isActive: true}, {new: true})
+                activeUser.save();
                 return done(null, user)
             } else {
                 done(null, false, { message: 'Password incorrect.!' })

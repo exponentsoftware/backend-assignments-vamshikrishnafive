@@ -20,8 +20,8 @@ exports.adminUser = async (req, res) => {
     }
     try {
         results.results = await UserTaskModel.find().limit(limit).skip(startIndex).exec()
-        res.status(200).json(results);
-        // res.render('todo.ejs', { data: res.json(results) })
+        // res.status(200).json(results);
+        res.render('todo.ejs', { data: JSON.stringify(results) })
     } catch (error) {
         res.status(404).json({ error: error })
     }

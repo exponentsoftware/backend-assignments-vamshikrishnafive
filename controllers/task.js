@@ -157,6 +157,15 @@ exports.sortByDate = async (req, res) => {
     }
 }
 
+exports.sortByNoOfCompletedTaskForallUsers = async (req, res) => {
+    try {
+        const results = await UserTaskModel.aggregate([{ $match : { isCompleted: 1}}])
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
 exports.completedTask = async (req, res) => {
     const { id } = req.params;
     try {

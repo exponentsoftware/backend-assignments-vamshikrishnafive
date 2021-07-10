@@ -7,9 +7,9 @@ const UserTaskSchema = mongoose.Schema({
         required: [true, 'Title is missing']
     },
     isCompleted: {
-        type: Boolean,
-        default: false
-    },
+        type: Number,
+        default: 0
+    }, // 0 is not completed, 1 is completed
     category: {
         type: String,
         enum: ['Work', 'Hobby', 'Task'],

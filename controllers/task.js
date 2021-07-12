@@ -166,6 +166,20 @@ exports.sortByNoOfCompletedTaskForallUsers = async (req, res) => {
     }
 }
 
+exports.UsersCompletedMaxTask = async(req, res) => {
+
+    try {
+        const MaxTask = await UserTaskModel.aggregate([
+            {$match : { isCompleted: 1}},
+            {$group: {_id: "$createdBy", Total: {$sum: 1}}},
+            {$sort: {total: 1}}
+        ])
+        res.status(200).json(MaxTask)
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
 exports.completedTask = async (req, res) => {
     const { id } = req.params;
     try {

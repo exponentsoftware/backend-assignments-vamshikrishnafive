@@ -1,1 +1,1 @@
-GET http://localhost:5000/api/todo/MaxCompletedTask
+GET HTTP://localhost:5000/

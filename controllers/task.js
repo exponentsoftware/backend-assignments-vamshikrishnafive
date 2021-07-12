@@ -1,4 +1,5 @@
 const UserTaskModel = require('../models/task.js');
+const taskInfoModel = require('../models/taskInfo.js');
 
 exports.adminUser = async (req, res) => {
     const page = parseInt(req.query.page)
@@ -47,8 +48,8 @@ exports.getAllUserTodo = async (req, res) => {
     }
     const createdBy = req.params.user_id
     try {
-        results.results = await UserTaskModel.find({createdBy})
-        .limit(limit).skip(startIndex).exec()
+        results.results = await UserTaskModel.find({ createdBy })
+            .limit(limit).skip(startIndex).exec()
         res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error })
@@ -159,20 +160,20 @@ exports.sortByDate = async (req, res) => {
 
 exports.sortByNoOfCompletedTaskForallUsers = async (req, res) => {
     try {
-        const results = await UserTaskModel.aggregate([{ $match : { isCompleted: 1}}])
+        const results = await UserTaskModel.aggregate([{ $match: { isCompleted: 1 } }])
         res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error.message });
     }
 }
 
-exports.UsersCompletedMaxTask = async(req, res) => {
+exports.UsersCompletedMaxTask = async (req, res) => {
 
     try {
         const MaxTask = await UserTaskModel.aggregate([
-            {$match : { isCompleted: 1}},
-            {$group: {_id: "$createdBy", Total: {$sum: 1}}},
-            {$sort: {total: 1}}
+            { $match: { isCompleted: 1 } },
+            { $group: { _id: "$createdBy", Total: { $sum: 1 } } },
+            { $sort: { total: 1 } }
         ])
         res.status(200).json(MaxTask)
     } catch (error) {
@@ -195,7 +196,16 @@ exports.getSigleTodo = async (req, res) => {
     const { id } = req.params;
     try {
         const results = await UserTaskModel.findById({ _id: id });
-        res.status(200).json(results);
+        const ViewTask = await taskInfoModel.findOne({ id })
+        const index = ViewTask.views.findIndex((id) => id === String(req.user._id));
+
+        if (index === -1) {
+            ViewTask.views.push(req.user_id);
+        } else {
+            ViewTask.views = ViewTask.views.filter((id) => id !== String(req.user_id));
+        }
+        const updatedTask = await taskInfoModel.findOneAndUpdate(id, views, { new: true });
+        res.status(200).json(results,updatedTask);
     } catch (error) {
         res.status(404).json({ error: error })
     }

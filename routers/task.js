@@ -13,7 +13,7 @@ const { adminUser,
         sortByNoOfCompletedTaskForallUsers, 
         UsersCompletedMaxTask} = require('../controllers/task');
 
-const  {isAdmin, isAuth, isNotAuth} = require('../middleware/auth');
+const  {isAdmin, isAuth} = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/todo/admin', isAdmin, adminUser)

@@ -9,6 +9,7 @@ const session = require('express-session');
 const passport = require('passport')
 
 const TodoRouter = require('./routers/task.js');
+const TaskInfo = require('./routers/taskinfo.js');
 const UserRouter = require('./routers/user.js');
 
 //constants
@@ -32,6 +33,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/api', TodoRouter)
+app.use('/api', TaskInfo)
 app.use('/api', UserRouter)
 
 //Connection designed

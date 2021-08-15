@@ -94,6 +94,7 @@ ORM/ODM Sequelize
 ### Day 8
 
 TODO with comments and Tags
+
 Add 2 new schemas
 
 One for Comments:
@@ -102,8 +103,8 @@ created_at
 updated_at
 posted_by (user_id)
 You can create flat comments or nested comments
-Another for Tags:
 
+Another for Tags:
 title
 created_at
 updated_at

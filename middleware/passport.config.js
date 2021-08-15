@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
-const UserModel = require("../models/user");
+const UserModel = require("../models/User");
 
 function initialPassport(passport) {
     const authenticateUser = async(email, password, done) => {

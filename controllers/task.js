@@ -1,5 +1,5 @@
-const UserTaskModel = require('../models/task.js');
-const taskInfoModel = require('../models/taskInfo.js');
+const UserTaskModel = require('../models/Task.js');
+const taskInfoModel = require('../models/TaskInfo.js');
 
 exports.adminUser = async (req, res) => {
     const page = parseInt(req.query.page)
@@ -7,7 +7,7 @@ exports.adminUser = async (req, res) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     let results = {}
-    if (endIndex < UserTaskModel.countDocuments().exec()) {
+    if (endIndex < UserTaskModel.count()) {
         results.next = {
             page: page + 1,
             limit: limit
@@ -20,8 +20,12 @@ exports.adminUser = async (req, res) => {
         }
     }
     try {
-        results.results = await UserTaskModel.find().limit(limit).skip(startIndex).exec()
-        // res.status(200).json(results);
+        results.results = await UserTaskModel.findAll({
+            limit: limit,
+            offset: startIndex
+        })
+        // limit(limit).skip(startIndex).exec()
+        res.status(200).json(results);
         res.render('todo.ejs', { data: JSON.stringify(results) })
     } catch (error) {
         res.status(404).json({ error: error })
@@ -34,7 +38,7 @@ exports.getAllUserTodo = async (req, res) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     let results = {}
-    if (endIndex < UserTaskModel.countDocuments().exec()) {
+    if (endIndex < UserTaskModel.count()) {
         results.next = {
             page: page + 1,
             limit: limit
@@ -48,8 +52,14 @@ exports.getAllUserTodo = async (req, res) => {
     }
     const createdBy = req.params.user_id
     try {
-        results.results = await UserTaskModel.find({ createdBy })
-            .limit(limit).skip(startIndex).exec()
+        results.results = await UserTaskModel.findAll({
+            where: {
+                createdBy: createdBy
+            },
+            limit: limit,
+            offset: startIndex
+        })
+        // .limit(limit).skip(startIndex).exec()
         res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error })
@@ -57,34 +67,38 @@ exports.getAllUserTodo = async (req, res) => {
 };
 
 exports.createUserTodo = async (req, res) => {
-
-    const Todo = req.body;
-    const Post = new UserTaskModel({ ...Todo, createdBy: req.params.user_id });
     try {
-        await Post.save();
-        res.status(200).json(PostT);
-    } catch (error) {
-        res.status(404).json({ Error: error })
-    }
-};
-
-exports.updateUserTodo = async (req, res) => {
-    const { id } = req.params
-    const { name, value, isTaskCompleted, category } = req.body;
-    const updateTodo = await UserTaskModel.findByIdAndUpdate({ _id: id }, { name, value, isTaskCompleted, category }, { new: true },)
-    try {
-        await updateTodo.save()
+        const { id } = req.params
+        const { name, value, isTaskCompleted, category } = req.body;
+        const updateTodo = await UserTaskModel.create({ name, value, isTaskCompleted, category })
         res.status(200).json(updateTodo);
     } catch (error) {
         res.status(404).json({ error: error })
     }
 };
 
-exports.deleteUserTodo = async (req, res) => {
-    const { id } = req.params
+exports.updateUserTodo = async (req, res) => {
     try {
-        await UserTaskModel.findByIdAndRemove({ _id: id });
-        res.status(200).json("Successfull deleted")
+        const { id } = req.params
+        const { name, value, isTaskCompleted, category } = req.body;
+        const user = await UserTaskModel.findByPk(id)
+        if (user == id) { 
+            const updateTodo = await UserTaskModel.create({ name, value, isTaskCompleted, category })
+            res.status(200).json(updateTodo);
+        }
+    } catch (error) {
+        res.status(404).json({ error: error })
+    }
+};
+
+exports.deleteUserTodo = async (req, res) => {
+    try {
+        const { id } = req.params
+        const user = await UserTaskModel.findByPk(id)
+        if (user == id) { 
+            const updateTodo = await UserTaskModel.destroy()
+            res.status(200).json(updateTodo);
+        }
     } catch (error) {
         console.log(error);
         res.status(404).json({ error: error })
@@ -98,7 +112,7 @@ exports.searchByTitle = async (req, res) => {
     const endIndex = page * limit;
     const { title } = req.query;
     let results = {}
-    if (endIndex < UserTaskModel.countDocuments().exec()) {
+    if (endIndex < UserTaskModel.count()) {
         results.next = {
             page: page + 1,
             limit: limit
@@ -112,7 +126,11 @@ exports.searchByTitle = async (req, res) => {
     }
     try {
         const query = new RegExp(title, "i");
-        results.results = await UserTaskModel.find({ title: query }).limit(limit).skip(startIndex).exec()
+        results.results = await UserTaskModel.findAll({
+            where : { title: query },
+            limit: limit,
+            skip: startIndex
+        })
         res.status(200).json(result);
     } catch (error) {
         res.status(404).json({ error: error });
@@ -123,7 +141,9 @@ exports.searchByCategory = async (req, res) => {
     const { category } = req.query;
     try {
         const query = new RegExp(category, "i");
-        const post = await UserTaskModel.findOne({ category: query })
+        results.results = await UserTaskModel.findOne({
+            where : { category : query }
+        })
         res.status(200).json(post);
     } catch (error) {
         res.status(404).json({ error: error });
@@ -137,7 +157,7 @@ exports.sortByDate = async (req, res) => {
     const endIndex = page * limit;
     const { order } = req.query;
     let results = {}
-    if (endIndex < UserTaskModel.countDocuments().exec()) {
+    if (endIndex < UserTaskModel.count()) {
         results.next = {
             page: page + 1,
             limit: limit
@@ -150,8 +170,11 @@ exports.sortByDate = async (req, res) => {
         }
     }
     try {
-        results.results = await UserTaskModel.find({})
-            .sort({ createdAt: order }).limit(limit).skip(startIndex).exec()
+        results.results = await UserTaskModel.findAll({
+            order:[[ 'createdAt', 'desc']],
+            limit: limit,
+            skip: startIndex
+        })
         res.status(200).json(results);
     } catch (error) {
         res.status(404).json({ error: error });
@@ -205,7 +228,7 @@ exports.getSigleTodo = async (req, res) => {
             ViewTask.views = ViewTask.views.filter((id) => id !== String(req.user_id));
         }
         const updatedTask = await taskInfoModel.findOneAndUpdate(id, views, { new: true });
-        res.status(200).json(results,updatedTask);
+        res.status(200).json(results, updatedTask);
     } catch (error) {
         res.status(404).json({ error: error })
     }

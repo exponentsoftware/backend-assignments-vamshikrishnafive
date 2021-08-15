@@ -1,25 +1,19 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const { Sequelize } = require('sequelize');
+const database = require('../config/database');
 
-const taskInfoSchema = mongoose.Schema({
-    like:{
-        type: [String],
-        default: []
+const taskInfoSchema = database.define('TaskInfo', {
+    like: {
+        type: Sequelize.STRING
     },
-    views: {
-        type: [String],
-        default: []
+    views:  {
+        type: Sequelize.STRING
     },
-    rating: {
-        type: [String],
-        default: []
+    rating:  {
+        type: Sequelize.STRING
     },
-    taskId: {
-        type: Schema.Types.ObjectId,
-        ref: "UserTaskModel"
+    taskId:  {
+        type: Sequelize.STRING
     }
 });
 
-const taskInfoModel = mongoose.model('taskInfoModel', taskInfoSchema);
-
-module.exports = taskInfoModel;
+module.exports = taskInfoSchema;

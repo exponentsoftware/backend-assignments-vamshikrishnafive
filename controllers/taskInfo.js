@@ -1,4 +1,4 @@
-const taskInfoModel = require("../models/taskInfo");
+const taskInfoModel = require("../models/TaskInfo");
 
 exports.likes = async(req, res) => {
     const id = req.params.id;

@@ -79,3 +79,14 @@ Create API to get all completed task per Learner
 Add Sorting logic to sort by Users who have completed maximum task 
 Add a collection to store views for Task, likes and ratings
 Create one API to get task either by most views, likes and ratings
+
+### Day 7
+
+Backend Assignment
+TODO List with Postgres/Sequelize
+Migrate your entire application created in Previous Assignment to use Postgres as DB and Sequelize as ORM
+Prefered Technologies
+Environment	Framework
+Backend APIs	Express Js
+Database	Postgres
+ORM/ODM Sequelize

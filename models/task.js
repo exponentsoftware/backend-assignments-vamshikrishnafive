@@ -1,34 +1,25 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const { Sequelize } = require('sequelize');
+const database = require('../config/database');
 
-const UserTaskSchema = mongoose.Schema({
+const UserTaskSchema = database.define('Task', {
     title: {
-        type: String,
-        required: [true, 'Title is missing']
+        type: Sequelize.STRING
     },
     isCompleted: {
-        type: Number,
-        default: 0
+        type: Sequelize.NUMBER
     }, // 0 is not completed, 1 is completed
     category: {
-        type: String,
-        enum: ['Work', 'Hobby', 'Task'],
-        required: [true, 'category is missing']
+        type: Sequelize.STRING
     },
     createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: "UserModel"
+        type: Sequelize.STRING
     },
     createdAt: {
-        type: Date,
-        default: new Date,
+        type: Sequelize.DATE
     },
     updatedAt: {
-        type: Date,
-        default: new Date,
+        type: Sequelize.DATE
     }
 });
 
-const UserTaskModel = mongoose.model('UserTaskModel', UserTaskSchema);
-
-module.exports = UserTaskModel;
+module.exports = UserTaskSchema;

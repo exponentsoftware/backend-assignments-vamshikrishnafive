@@ -91,7 +91,7 @@ Backend APIs	Express Js
 Database	Postgres
 ORM/ODM Sequelize
 
-### Day 7
+### Day 8
 
 TODO with comments and Tags
 Add 2 new schemas

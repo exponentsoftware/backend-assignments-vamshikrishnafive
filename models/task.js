@@ -1,12 +1,12 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const database = require('../config/database');
 
 const UserTaskSchema = database.define('Task', {
     title: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
     },
     isCompleted: {
-        type: Sequelize.NUMBER
+        type: DataTypes.NUMBE
     }, // 0 is not completed, 1 is completed
     category: {
         type: Sequelize.STRING

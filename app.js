@@ -34,5 +34,5 @@ app.use('/api', UserRouter)
 
 //connection
 database.authenticate()
-.then(app.listen(PORT, () => console.log(`Connected to DB, app running on http://localhost:${PORT}/api`)))
-.catch(err => console.error(err))
+    .then(app.listen(PORT, () => console.log(`Connected to DB, app running on http://localhost:${PORT}/api`)))
+    .catch(err => console.error(err))

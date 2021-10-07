@@ -83,7 +83,7 @@ exports.updateUserTodo = async (req, res) => {
         const { name, value, isTaskCompleted, category } = req.body;
         const user = await UserTaskModel.findByPk(id)
         if (user == id) { 
-            const updateTodo = await UserTaskModel.create({ name, value, isTaskCompleted, category })
+            const updateTodo = await UserTaskModel.update({ name, value, isTaskCompleted, category })
             res.status(200).json(updateTodo);
         }
     } catch (error) {

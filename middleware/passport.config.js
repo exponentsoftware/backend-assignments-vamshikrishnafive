@@ -4,14 +4,13 @@ const UserModel = require("../models/User");
 
 function initialPassport(passport) {
     const authenticateUser = async(email, password, done) => {
-        const user = await UserModel.findOne({email})
-        if (!user) {
-            return done(null, false, { message: 'No user with that email_id' })
-        }
         try {
+            const user = await UserModel.findOne({where : { email }})
+            if (!user) {
+                return done(null, false, { message: 'No user with that email_id' })
+            }
             if (await bcrypt.compare(password, user.password)) {
-                const activeUser = await UserModel.findOneAndUpdate({email}, {isActive: true}, {new: true})
-                activeUser.save();
+                user.update({isActive: true})
                 return done(null, user)
             } else {
                 done(null, false, { message: 'Password incorrect.!' })
@@ -23,7 +22,7 @@ function initialPassport(passport) {
     passport.use(new LocalStrategy({ usernameField: 'email'}, authenticateUser))
     passport.serializeUser((user, done) => {done(null, user.id)})
     passport.deserializeUser((id, done) => {
-        UserModel.findById(id, (err, user) => { return done(err, user)})
+        UserModel.findByPk(id).then((err, user) => { return done(err, user)})
     })
 }
 

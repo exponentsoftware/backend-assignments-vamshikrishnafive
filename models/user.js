@@ -1,9 +1,9 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize} = require('sequelize');
 const database = require('../config/database');
 
-const UserSchema = database.define('User',{
+const UserSchema = database.define('user',{
     name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
     },
     email: {
         type: Sequelize.STRING

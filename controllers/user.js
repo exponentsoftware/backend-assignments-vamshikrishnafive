@@ -20,10 +20,9 @@ exports.signup = async (req, res) => {
     const { name, email, phone, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        newUser = await new UserModel({ name, email, phone, password: hashedPassword, isActive: true });
-        await newUser.save()
+        newUser = await UserModel({ name, email, phone, password: hashedPassword, isActive: true });
         res.redirect('login')
-        // res.status(200).json(newUser);
+        res.status(200).json(newUser);
     } catch (error) {
         res.redirect('/api/register');
         // res.status(400).json({ error: error.message })
